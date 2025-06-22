@@ -245,7 +245,7 @@ function Modal(props){
 ```
 
 → 자식 컴포넌트는 **props를 수정하지 않고 사용만 해야 함.**
-수정이 필요하다면, 상태(state)를 부모 컴포넌트로 끌어올려야 해. (state lifting)
+수정이 필요하다면, 상태(state)를 부모 컴포넌트로 끌어올려야 함. (state lifting)
 
 ---
 
