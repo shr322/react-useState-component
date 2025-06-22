@@ -5,9 +5,9 @@ import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
-  const [inp, setInp] = useState('');
-  
-
+  const [inp, setInp] = useState([]);
+  const [modal, setModal] = useState(false)
+  const [modalNum, setModalNum] = useState(0);
   return (
     <>
       <div className="App">
@@ -15,30 +15,83 @@ function App() {
           <h4>내가 연습한 버전</h4>
         </div>
 
+        <button onClick={()=>{
+          const copy = JSON.parse(JSON.stringify(data));
+          copy.sort((a,b)=>{
+            if(a.title > b.title) {
+              return 1;
+            } else {
+              return -1;
+            }
+          })
+          setData(copy)
+        }}>정렬</button>
+
         {
           data.map((item,index)=>{
             return (
               <div className="list" key={index}>
-                <h4>{item.title}</h4>
+                <h4 onClick={()=>{
+                  setModal(true)
+                  setModalNum(index)
+                }}>
+                  {item.title}
+
+                  <button onClick={(e)=>{
+                    e.stopPropagation();
+                    const copy = JSON.parse(JSON.stringify(data));
+                    copy[index].count++
+                    setData(copy)
+                  }}>👍</button>{item.count}
+                </h4>
                 <p>{item.subTitle}</p>
                 <p>{item.date}</p>
+                <button onClick={()=>{
+                  const copy = JSON.parse(JSON.stringify(data));
+                  copy.splice(index, 1);
+                  setData(copy)
+                }}>삭제</button>
               </div>
             )
           })
         }
       </div>
 
-      <input type="text" onChange={(e)=>{
+      <input type="text" placeholder="메인텍스트" onChange={(e)=>{
         setInp(e.target.value);
       }}/>
       <button onClick={()=>{
         const date = new Date;
         const copy = JSON.parse(JSON.stringify(data));
-        copy.push({title: `${inp}`, subTitle: `${data.length+1}번 내용입니다.`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`})
+        copy.push({title: `${inp}`, subTitle: `${data.length+1}번 내용입니다.`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`, count: 0})
         setData(copy)
       }}>추가</button>
+
+
+      {modal ? <Modal setData={setData} data={data} modalNum={modalNum}></Modal> : null}
+      
     </>
   );
+}
+
+
+function Modal(props){
+  let data = props.data;
+  let num = props.modalNum;
+  return (
+    <>
+      <div className="modal">
+        <div>{data[num].title}</div>
+        <div>{data[num].subTitle}</div>
+        <div>{data[num].date}</div>
+        <button onClick={()=>{
+          const copy = [...props.data];
+          copy[num].count = 0;
+          props.setData(copy)
+        }}>좋아요 초기화</button>
+      </div>
+    </>
+  )
 }
 
 export default App;
