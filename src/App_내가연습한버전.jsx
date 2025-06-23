@@ -88,7 +88,7 @@ function Modal(props){
           const copy = [...props.data];
           copy[num].count = 0;
           props.setData(copy)
-        }}>좋아요 초기화</button>
+        }}>좋아요 0으로</button>
       </div>
     </>
   )
