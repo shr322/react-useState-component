@@ -5,7 +5,8 @@ import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
-  const [inp, setInp] = useState([]);
+  const [inp, setInp] = useState('');
+  const [inp2, setInp2] = useState('');
   const [modal, setModal] = useState(false)
   const [modalNum, setModalNum] = useState(0);
   return (
@@ -60,11 +61,33 @@ function App() {
       <input type="text" placeholder="메인텍스트" onChange={(e)=>{
         setInp(e.target.value);
       }}/>
+      <input type="text" placeholder="서브텍스트" onChange={(e)=>{
+        setInp2(e.target.value);
+      }}/>
       <button onClick={()=>{
-        const date = new Date;
-        const copy = JSON.parse(JSON.stringify(data));
-        copy.push({title: `${inp}`, subTitle: `${data.length+1}번 내용입니다.`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`, count: 0})
-        setData(copy)
+
+
+        if(!inp && !inp2){ 
+          alert('입력창이 비어있습니다.');
+          return
+        }
+
+        if(!inp){
+          alert('메인텍스트를 입력하세요.');
+          return
+        }
+
+        if(!inp2){
+          alert('서브텍스트를 입력하세요.');
+          return
+        }
+
+        if(inp && inp2){
+          const date = new Date;
+          const copy = JSON.parse(JSON.stringify(data));
+          copy.push({title: `${inp}`, subTitle: `${inp2}`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`, count: 0})
+          setData(copy)
+        }
       }}>추가</button>
 
 
