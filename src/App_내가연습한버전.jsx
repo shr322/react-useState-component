@@ -58,37 +58,44 @@ function App() {
         }
       </div>
 
-      <input type="text" placeholder="메인텍스트" onChange={(e)=>{
-        setInp(e.target.value);
-      }}/>
-      <input type="text" placeholder="서브텍스트" onChange={(e)=>{
-        setInp2(e.target.value);
-      }}/>
-      <button onClick={()=>{
+        <form onSubmit={(e)=>{
+          e.preventDefault();
+           if(!inp && !inp2){ 
+              alert('입력창이 비어있습니다.');
+              return
+            }
 
+            if(!inp){
+              alert('메인텍스트를 입력하세요.');
+              return
+            }
 
-        if(!inp && !inp2){ 
-          alert('입력창이 비어있습니다.');
-          return
-        }
+            if(!inp2){
+              alert('서브텍스트를 입력하세요.');
+              return
+            }
 
-        if(!inp){
-          alert('메인텍스트를 입력하세요.');
-          return
-        }
+            if(inp && inp2){
+              const date = new Date;
+              const copy = JSON.parse(JSON.stringify(data));
+              copy.push({title: `${inp}`, subTitle: `${inp2}`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`, count: 0})
+              setData(copy)
 
-        if(!inp2){
-          alert('서브텍스트를 입력하세요.');
-          return
-        }
-
-        if(inp && inp2){
-          const date = new Date;
-          const copy = JSON.parse(JSON.stringify(data));
-          copy.push({title: `${inp}`, subTitle: `${inp2}`, date: `${(date.getMonth() + 1) + '월'} ${date.getDate() + '일'}`, count: 0})
-          setData(copy)
-        }
-      }}>추가</button>
+              document.querySelectorAll('input').forEach((item)=>{
+                item.value = '';
+              })
+              document.querySelectorAll('input')[0].focus();
+            }
+          }}>
+          <input type="text" placeholder="메인텍스트" onChange={(e)=>{
+            setInp(e.target.value);
+          }}/>
+          <input type="text" placeholder="서브텍스트" onChange={(e)=>{
+            setInp2(e.target.value);
+          }}/>
+          <button>추가</button>
+        </form>
+      
 
 
       {modal ? <Modal setData={setData} data={data} modalNum={modalNum}></Modal> : null}
