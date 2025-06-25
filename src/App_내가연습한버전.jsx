@@ -84,6 +84,8 @@ function App() {
               document.querySelectorAll('input').forEach((item)=>{
                 item.value = '';
               })
+              setInp('')
+              setInp2('')
               document.querySelectorAll('input')[0].focus();
             }
           }}>
